@@ -408,28 +408,14 @@ function removeTyping() {
 }
 
 function fmt(text) {
-  // First escape HTML
-  let s = esc(text);
-  // Render [Link Text](url) as clickable links BEFORE escaping breaks them
-  // We work on raw text before esc for links, so redo this carefully:
-  // Actually process links on original text then escape the rest
-  // Re-approach: process on original, escape non-link parts
-  s = text
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    // Markdown links [text](url)
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:var(--red);font-weight:700;text-decoration:underline;">$1</a>')
-    // Numbered steps: make them bold and add spacing
-    .replace(/(^|\n)(\d+)\.\s/g, '$1<br><strong style="color:var(--brown);">$2.</strong> ')
-    // Double newlines = new paragraph
-    .replace(/\n\n/g, '</p><p>')
-    // Single newlines
-    .replace(/\n/g, '<br>')
-    // Bold
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    // Italic
-    .replace(/\*(.*?)\*/g, '<em style="font-style:italic;color:var(--red-light);">$1</em>')
-    // Bare URLs not already linked
-    .replace(/(?<!href=")(https?:\/\/[^\s<"]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:var(--red);font-weight:700;">$1</a>');
+  var s = String(text);
+  s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:#7a2318;font-weight:700;text-decoration:underline;">$1</a>');
+  s = s.replace(/(^|\n)(\d+)\.\s/g, '$1<br><strong>$2.</strong> ');
+  s = s.replace(/\n\n/g, '</p><p>');
+  s = s.replace(/\n/g, '<br>');
+  s = s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/\*(.*?)\*/g, '<em>$1</em>');
   return '<p>' + s + '</p>';
 }
 

@@ -409,14 +409,25 @@ function removeTyping() {
 
 function fmt(text) {
   var s = String(text);
-  s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener" style="color:#7a2318;font-weight:700;text-decoration:underline;">$1</a>');
-  s = s.replace(/(^|\n)(\d+)\.\s/g, '$1<br><strong>$2.</strong> ');
-  s = s.replace(/\n\n/g, '</p><p>');
-  s = s.replace(/\n/g, '<br>');
-  s = s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-  s = s.replace(/\*(.*?)\*/g, '<em>$1</em>');
-  return '<p>' + s + '</p>';
+  var amp = '&' + 'amp;';
+  var lt = '&' + 'lt;';
+  var gt = '&' + 'gt;';
+  var openP = '<' + 'p>';
+  var closeP = '<' + '/p>';
+  var closePOpenP = '<' + '/p><' + 'p>';
+  var br = '<' + 'br>';
+  s = s.replace(/&/g, amp).replace(/</g, lt).replace(/>/g, gt);
+  s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g, function(m, txt, url) {
+    return '<' + 'a href="' + url + '" target="_blank" rel="noopener" style="color:#7a2318;font-weight:700;text-decoration:underline;">' + txt + '<' + '/a>';
+  });
+  s = s.replace(/(^|\n)(\d+)\.\s/g, function(m, pre, num) {
+    return pre + br + '<' + 'strong>' + num + '.<' + '/strong> ';
+  });
+  s = s.replace(/\n\n/g, closePOpenP);
+  s = s.replace(/\n/g, br);
+  s = s.replace(/\*\*(.*?)\*\*/g, function(m, t) { return '<' + 'strong>' + t + '<' + '/strong>'; });
+  s = s.replace(/\*(.*?)\*/g, function(m, t) { return '<' + 'em>' + t + '<' + '/em>'; });
+  return openP + s + closeP;
 }
 
 function esc(s) {

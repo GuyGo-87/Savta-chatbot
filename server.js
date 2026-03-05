@@ -274,8 +274,8 @@ function parseRecipe(text) {
   return {
     title: getTag("RECIPE_TITLE", text),
     desc: getTag("RECIPE_DESC", text),
-    ingredients: getTag("RECIPE_INGREDIENTS", text).split("\\n").map(function(l){return l.replace(/^-\\s*/,"").trim();}).filter(Boolean),
-    steps: getTag("RECIPE_STEPS", text).split("\\n").map(function(l){return l.replace(/^\\d+\\.\\s*/,"").trim();}).filter(Boolean),
+    ingredients: getTag("RECIPE_INGREDIENTS", text).split("\n").map(function(l){return l.replace(/^-\s*/,"").trim();}).filter(Boolean),
+    steps: getTag("RECIPE_STEPS", text).split("\n").map(function(l){return l.replace(/^\d+\.\s*/,"").trim();}).filter(Boolean),
     tip: getTag("RECIPE_TIP", text),
     product: getTag("RECIPE_PRODUCT", text)
   };
@@ -341,8 +341,7 @@ function buildRecipeCard(r) {
 }
 
 function renderText(text) {
-  // Strip recipe block from text and render separately
-  var recipeMatch = text.match(/\\[RECIPE_START\\][\\s\\S]*?\\[RECIPE_END\\]/);
+  var recipeMatch = text.match(/\[RECIPE_START\][\s\S]*?\[RECIPE_END\]/);
   var wrap = document.createElement("div");
 
   if (recipeMatch) {
@@ -351,18 +350,18 @@ function renderText(text) {
     var after = text.substring(text.indexOf("[RECIPE_END]") + 12).trim();
 
     if (before) {
-      before.split("\\n\\n").forEach(function(p) {
+      before.split("\n\n").forEach(function(p) {
         if (p.trim()) { var el = document.createElement("p"); el.textContent = p.trim(); wrap.appendChild(el); }
       });
     }
     if (recipe) wrap.appendChild(buildRecipeCard(recipe));
     if (after) {
-      after.split("\\n\\n").forEach(function(p) {
+      after.split("\n\n").forEach(function(p) {
         if (p.trim()) { var el = document.createElement("p"); el.textContent = p.trim(); wrap.appendChild(el); }
       });
     }
   } else {
-    text.split("\\n\\n").forEach(function(p) {
+    text.split("\n\n").forEach(function(p) {
       if (p.trim()) { var el = document.createElement("p"); el.textContent = p.trim(); wrap.appendChild(el); }
     });
   }

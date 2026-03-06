@@ -520,7 +520,7 @@ function buildRecipeCard(r) {
   // Divider
   var div = document.createElement("div");
   div.className = "recipe-divider";
-  div.innerHTML = '<span>Savta\'s Spices</span>';
+  div.innerHTML = "<span>Savta's Spices</span>";
   card.appendChild(div);
 
   // Body
@@ -564,7 +564,7 @@ function buildRecipeCard(r) {
     tipWrap.className = "recipe-tip-wrap";
     var tip = document.createElement("div");
     tip.className = "recipe-tip";
-    tip.innerHTML = '<span class="recipe-tip-label">Savta\'s Tip</span>' + escHtml(r.tip);
+    tip.innerHTML = "<span class=\"recipe-tip-label\">Savta&#39;s Tip</span>" + escHtml(r.tip);
     tipWrap.appendChild(tip);
     body.appendChild(tipWrap);
   }

@@ -19,16 +19,17 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      scriptSrcAttr: ["'unsafe-inline'"], // allows onclick, onsubmit etc in HTML
       styleSrc: ["'self'", "'unsafe-inline'", "fonts.googleapis.com", "fonts.gstatic.com"],
-      fontSrc: ["'self'", "fonts.gstatic.com"],
+      fontSrc: ["'self'", "fonts.gstatic.com", "data:"],
       imgSrc: ["'self'", "data:", "https:"],
       connectSrc: ["'self'"],
       frameSrc: ["'none'"],
       objectSrc: ["'none'"],
     },
   },
-  crossOriginEmbedderPolicy: false, // allow fonts/images to load
+  crossOriginEmbedderPolicy: false,
 }));
 
 // ============================================================
